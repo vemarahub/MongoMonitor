@@ -2,8 +2,10 @@
 A mongo db basic administration tool
 
 
-Install Required python Packages using 
+Install Required python Packages using :
+
 pip install pymongo
+
 pip install flask
 
 Use "run.py" to run the code
