@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Mongo Details</title>
+</head>
+<body>
+<br>
+<h2>Mongo Database Instance Details:</h1>
+<h2>Instance Name : {{ instance }}</h2>
+<h3>Instance Size : {{ tot_size }} GB </h3>
+  <div>
+    <table border=2>
+     {% for db in final_list %}     
+           {% for item in db %}          
+             <td> {{item}} </td>
+           {% endfor %}
+        </tr> 
+     {% endfor %}
+    
+   
+    </table>
+    </div>
+</body>
+</html>
