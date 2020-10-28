@@ -6,12 +6,14 @@ import db_details
 
 app=Flask(__name__)
 
-final_list=[]
-tot_size=""
-instance=""
+
 
 @app.route('/', methods=['GET', 'POST'])
 def server():
+    final_list=[]
+    tot_size=""
+    instance=""
+    
     if request.method == 'POST':
         # Then get the data from the form
         hostname = request.form['hostname']
@@ -30,7 +32,7 @@ def server():
         return render_template('login.html')
 
 
-@app.route('/home') 
+#@app.route('/home') 
 def home(final_list,tot_size,instance):
   #  final_list,tot_size,instance=db_details.db_info()
     return render_template("home.html",instance=instance,final_list=final_list,tot_size=tot_size)
