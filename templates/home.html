@@ -6,7 +6,7 @@
 <body>
 <div>
 <br>
-<h2>Mongo Database Instance Details:</h2>
+<h3>Mongo Database Instance Details:</h3>
  <table border=2>
   <tr><th>Instance Name</th><td> {{ instance }}</td></tr>
 <tr><th>Instance Size</th><td> {{ tot_size }} GB </td></tr>
@@ -24,11 +24,12 @@
 <tr><th>Connections</th><td> {{ conn }} </td></tr>
 </table>
 <br>
-<h2>Database Info:</h2>
+<h3>Database Info:</h3>
 
     <table border=2>
-    <tr>
-     {% for db in final_list %}     
+
+     {% for db in final_list %}   
+         <tr>  
            {% for item in db %}          
              <td> {{item}} </td>
            {% endfor %}
@@ -37,7 +38,17 @@
     
    
     </table>
+   <h3>Users Info:</h3>
+    <table border=2>
    
+     {% for usr in user_list %}     
+        <tr>         
+             <td> {{usr}} </td>
+  
+        </tr> 
+     {% endfor %}
+   
+    </table>
 </div>    
 </body>
 </html>

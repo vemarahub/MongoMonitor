@@ -5,6 +5,7 @@ from pymongo import MongoClient,errors
 def db_info(url):
    
     final_list=[]
+    user_list=[]
     tot_size=""
     instance=""
     version=""
@@ -32,7 +33,7 @@ def db_info(url):
     version=client["admin"].command("serverStatus")["version"]
     conn = client["admin"].command("serverStatus")["connections"]
     uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
-    
+    user_list = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
     try:
         primary = client["admin"].command("serverStatus")["repl"]["primary"]
         hosts =  client["admin"].command("serverStatus")["repl"]["hosts"]
@@ -63,5 +64,5 @@ def db_info(url):
     final_list.append(doc_count)
     final_list.append(col_list)
 
-    return final_list,tot_size,instance,version,uptime,hosts,primary,conn
+    return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list
 

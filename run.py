@@ -26,12 +26,12 @@ def server():
         if(url==""):
             url = "mongodb://"+username+":"+password+"@"+hostname+":"+port+"/admin?retryWrites=true&w=majority"
        
-        final_list,tot_size,instance,version,uptime,hosts,primary,conn=db_details.db_info(url)
+        final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list=db_details.db_info(url)
         
         if(instance==""):
             return render_template("error.html")
         else:
-            return render_template("home.html",instance=instance,final_list=final_list,tot_size=tot_size,version=version,uptime=uptime,hosts=hosts,primary=primary,conn=conn)
+            return render_template("home.html",instance=instance,final_list=final_list,tot_size=tot_size,version=version,uptime=uptime,hosts=hosts,primary=primary,conn=conn,user_list=user_list)
       
 
     else:   
