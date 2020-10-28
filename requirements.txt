@@ -3,6 +3,7 @@ click==7.1.2
 Django==3.1.2
 django-six==1.0.4
 Flask==1.1.2
+Frozen-Flask==0.15
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
