@@ -4,11 +4,28 @@
 </head>
 <body>
 <br>
-<h2>Mongo Database Instance Details:</h1>
-<h2>Instance Name : {{ instance }}</h2>
-<h3>Instance Size : {{ tot_size }} GB </h3>
+<h2>Mongo Database Instance Details:</h2>
+ <table border=2>
+  <tr><th>Instance Name</th><td> {{ instance }}</td></tr>
+<tr><th>Instance Size</th><td> {{ tot_size }} GB </td></tr>
+<tr><th>Version</th><td> {{ version }} </td></tr>
+<tr><th>Up Time</th><td> {{ uptime }} Days </td></tr>
+{% if (hosts!="") %}
+<tr><th>Instance Type </th><td> Replica Set </td></tr>
+<tr><th>Hosts </th><td> {{ hosts }} </td></tr>
+<tr><th>Primary</th><td> {{ primary }} </td></tr>
+
+{% else %}
+<tr><th>Instance Type </th><td> Standalone </td></tr>
+
+{% endif %}
+<tr><th>Connections</th><td> {{ conn }} </td></tr>
+</table>
+<br>
+<h2>Database Info:</h2>
   <div>
     <table border=2>
+    <tr>
      {% for db in final_list %}     
            {% for item in db %}          
              <td> {{item}} </td>

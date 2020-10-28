@@ -3,8 +3,18 @@ import pymongo
 import pyautogui
 
 
-client = pymongo.MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
+#client = pymongo.MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
 sum = 0
+
+client = pymongo.MongoClient("mongodb://test:test@localhost:27000/admin?retryWrites=true&w=majority") # defaults to port 27017
+try:
+    result = client["admin"].command("serverStatus")
+except KeyError:
+    result=""
+        
+print(result)
+
+"""
 for db in client.list_databases():
     #Total Size on Disk
     sum = sum + round(db["sizeOnDisk"]/1024/1024/1024,2)
@@ -13,7 +23,7 @@ for db in client.list_databases():
     
     #Database List
     print(db["name"]," ",round(db["sizeOnDisk"]/1024/1024/1024,2),"GB")
-    pyautogui.alert(db["name"])
+    
     #Collections in each DB
     print("No Of Collections :",client[db["name"]].command("dbstats")["collections"])
     print("No Of Indexes :",client[db["name"]].command("dbstats")["indexes"])
@@ -23,7 +33,7 @@ for db in client.list_databases():
    
     #for col in client[db["name"]].list_collection_names():
         #print(col)
-    
+     
 print()  
 print("-----------------------------------------")   
 print("Total Size on Disk for all DBs : ",sum,"GB") 
@@ -39,4 +49,4 @@ print("Total Size on Disk for all DBs : ",sum,"GB")
 
 #returnList = db.sales.find({"customer":{"$exists": "false"}})
 #print(returnList[0])
-
+"""

@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
-from pymongo import MongoClient
+from pymongo import MongoClient,errors
 
 
-def db_info(url,hostname,port):
-    instance=hostname+":"+port
+def db_info(url):
+   
+    final_list=[]
+    tot_size=""
+    instance=""
+    version=""
+    uptime=""
+    hosts=""
+    primary=""
+    conn=""
+    
     #client = MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
-    client = MongoClient(url)
+    try:
+        client = MongoClient(url,serverSelectionTimeoutMS = 20000)
+        client.server_info()
+    except:
+        return final_list,tot_size,instance,version,uptime,hosts,primary,conn
+            
     db_list=["DB NAME"]
     col_count=["COLL COUNT"]
     db_size=[]
@@ -13,7 +27,19 @@ def db_info(url,hostname,port):
     idx_count=["INDEX COUNT"]
     doc_count=["DOC COUNT"]
     col_list=["COLLECTIONS"]
-
+    
+    instance=client["admin"].command("serverStatus")["host"]
+    version=client["admin"].command("serverStatus")["version"]
+    conn = client["admin"].command("serverStatus")["connections"]
+    uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
+    
+    try:
+        primary = client["admin"].command("serverStatus")["repl"]["primary"]
+        hosts =  client["admin"].command("serverStatus")["repl"]["hosts"]
+    except KeyError:
+        primary=""
+        hosts=""
+    
     final_list=[]
 
     for db in client.list_databases():
@@ -24,7 +50,8 @@ def db_info(url,hostname,port):
         idx_count.append(client[db["name"]].command("dbstats")["indexes"])
         doc_count.append(client[db["name"]].command("dbstats")["objects"]) 
         col_list.append(list(client[db["name"]].list_collection_names()))
-
+        
+    
     
 
     tot_size= (sum(db_size)) 
@@ -36,5 +63,5 @@ def db_info(url,hostname,port):
     final_list.append(doc_count)
     final_list.append(col_list)
 
-    return final_list,tot_size,instance
+    return final_list,tot_size,instance,version,uptime,hosts,primary,conn
 
