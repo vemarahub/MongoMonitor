@@ -6,6 +6,9 @@ import db_details
 
 app=Flask(__name__)
 
+final_list=[]
+tot_size=""
+instance=""
 
 @app.route('/', methods=['GET', 'POST'])
 def server():
