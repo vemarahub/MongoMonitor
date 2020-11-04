@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pymongo
-import pyautogui
+#import pyautogui
 
 
 #client = pymongo.MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
@@ -8,13 +8,11 @@ sum = 0
 
 client = pymongo.MongoClient("mongodb://test:test@localhost:27000/admin?retryWrites=true&w=majority") # defaults to port 27017
 try:
-    result = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
-    for res in result:
-        print(res)
+    print(client["admin"].command("getLog"))
 except KeyError:
-    result=""
+    
         
-print(result)
+
 
 """
 for db in client.list_databases():

@@ -1,4 +1,4 @@
-<html>
+ <html>
 <head>
 <title>Mongo Details</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
@@ -38,6 +38,23 @@
     
    
     </table>
+       
+     {% if ops_list|length > 5  %}   
+    <h3>Current Active Ops:</h3>
+
+    <table border=2>
+
+     {% for ops in ops_list %}   
+         <tr>  
+           {% for op in ops %}          
+             <td> {{op}} </td>
+           {% endfor %}
+        </tr> 
+     {% endfor %}
+    
+   
+    </table>
+    {% endif %}
    <h3>Users Info:</h3>
     <table border=2>
    

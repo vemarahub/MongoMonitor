@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pymongo import MongoClient,errors
+from pymongo import MongoClient
 
 
 def db_info(url):
    
     final_list=[]
+    ops_list=[]
     user_list=[]
     tot_size=""
     instance=""
@@ -14,13 +15,7 @@ def db_info(url):
     primary=""
     conn=""
     
-    #client = MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
-    try:
-        client = MongoClient(url,serverSelectionTimeoutMS = 20000)
-        client.server_info()
-    except:
-        return final_list,tot_size,instance,version,uptime,hosts,primary,conn
-            
+    
     db_list=["DB NAME"]
     col_count=["COLL COUNT"]
     db_size=[]
@@ -28,6 +23,33 @@ def db_info(url):
     idx_count=["INDEX COUNT"]
     doc_count=["DOC COUNT"]
     col_list=["COLLECTIONS"]
+    
+    op_ops=["OPERATION"]
+    op_commands=["COMMAND"]
+    op_nss=["NAMESPACE"]
+    op_currentOpTimes=["CURRENT OP TIME"]
+    op_secrunnings=["SECS RUNNING"]
+    
+    #client = MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
+    try:
+        client = MongoClient(url,serverSelectionTimeoutMS = 50000)
+        client.server_info()
+        
+        with client.admin.aggregate([{"$currentOp": {}}]) as cursor:
+            for operation in cursor:
+                if "$currentOp" in str(operation["command"]):
+                    continue
+                else:    
+                    op_ops.append(operation["op"])
+                    op_commands.append(operation["command"])
+                    op_nss.append(operation["ns"])
+                    op_currentOpTimes.append(operation["currentOpTime"])            
+                    op_secrunnings.append(operation["secs_running"])
+        
+    except:
+        return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list
+            
+  
     
     instance=client["admin"].command("serverStatus")["host"]
     version=client["admin"].command("serverStatus")["version"]
@@ -64,5 +86,10 @@ def db_info(url):
     final_list.append(doc_count)
     final_list.append(col_list)
 
-    return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list
+    ops_list.append(op_ops)
+    ops_list.append(op_commands)
+    ops_list.append(op_nss)
+    ops_list.append(op_currentOpTimes)
+    ops_list.append(op_secrunnings)
+    return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list
 
