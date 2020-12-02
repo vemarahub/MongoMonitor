@@ -1,5 +1,5 @@
-# MongoAdminTool
-A mongo db basic administration tool using Python
+# Mongo Monitor Tool in Python ( Mon-Mon )
+A Mongo db basic monitoring tool using Python
 
 
 Install Required python Packages using :
