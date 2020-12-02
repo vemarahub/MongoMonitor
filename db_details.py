@@ -2,6 +2,20 @@
 from pymongo import MongoClient
 import getReplicationInfo
 
+
+def switch_repl(argument):
+    switcher = {
+        1: "Primary",
+        2: "Secondary",
+        3: "Recovering",
+        6: "Unkown",
+        8: "Down",
+        9: "RollBack",
+        10: "Removed"       
+    }
+    return switcher.get(argument)
+
+
 def db_info(url):
    
     final_list=[]
@@ -23,7 +37,7 @@ def db_info(url):
     col_count=["COLL COUNT"]
     db_size=[]
     db_size.append(0)
-    idx_count=["INDEX COUNT"]
+    idx_count=["IDX COUNT"]
     doc_count=["DOC COUNT"]
     col_list=["COLLECTIONS"]
     
@@ -54,14 +68,14 @@ def db_info(url):
         return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list,tput_list,repl_list
             
   
-    #Instance Details
+    #INSTANCE DETAILS################
     instance=client["admin"].command("serverStatus")["host"]
     version=client["admin"].command("serverStatus")["version"]
     conn = client["admin"].command("serverStatus")["connections"]
     uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
     user_list = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
     
-    #Throughput
+    #THROUGHPUT######################
     tput_list.append(client["admin"].command("serverStatus")["opcounters"]["query"])
     tput_list.append(client["admin"].command("serverStatus")["opcounters"]["insert"])
     tput_list.append(client["admin"].command("serverStatus")["opcounters"]["update"])
@@ -69,9 +83,19 @@ def db_info(url):
     tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["readers"])
     tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["writers"])
         
-    #Replication
+    #REPLICATION####################
+    repl_lag=client["admin"].command({"replSetGetStatus": 1})["members"][0]["optimeDate"] - client["admin"].command({"replSetGetStatus": 1})["members"][1]["optimeDate"]
+    timediff=getReplicationInfo.timediff(client)
+    
     repl_list.append(getReplicationInfo.usedmb(client))
-    repl_list.append(getReplicationInfo.timediff(client))
+    repl_list.append(timediff)
+    repl_list.append(repl_lag)
+    repl_list.append(timediff - repl_lag.seconds)
+   
+#    repl_mems = client["admin"].command({"replSetGetStatus": 1})["members"]
+       # for repl_mem in repl_mems:
+    #    print(repl_mem["name"])
+     #   switch_repl(repl_mem["state"])
     
     try:
         primary = client["admin"].command("serverStatus")["repl"]["primary"]

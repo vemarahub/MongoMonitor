@@ -11,7 +11,7 @@
       <nav class="navbar navbar-expand-lg fixed-top navbar-transparent bg-primary" color-on-scroll="400">
         <div class="container">
           <div class="navbar-translate">
-            <a class="navbar-brand" href="#" rel="tooltip">Mongo Monitor(MoMon)</a>
+            <a class="navbar-brand" href="#" rel="tooltip">Mongo Monitor ( Mon-Mon )</a>
             <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
               aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-bar bar1"></span>
@@ -49,7 +49,7 @@
 <body>
 
 <div class="section" id="instance">
-<h3>Mongo Database Instance Details:</h3>
+<div class="h4 text-center mb-4 title">Instance Details:</div>
  <table border=2>
   <tr><th>Instance Name</th><td> {{ instance }}</td></tr>
 <tr><th>Instance Size</th><td> {{ tot_size }} GB </td></tr>
@@ -68,8 +68,9 @@
 </table>
 </div>
 <br/><br/>
+
 <div class="section" id="dbinfo">
-<h3>Database Info:</h3>
+<div class="h4 text-center mb-4 title">Database Info:</div>
     <table border=2>
      {% for db in final_list %}   
          <tr>  
@@ -82,7 +83,7 @@
 </div>  
 
      {% if ops_list|length > 5  %}   
-    <h3>Current Active Ops:</h3>
+    <div class="h4 text-center mb-4 title">Current Active Ops:</div>
 
     <table border=2>
      {% for ops in ops_list %}   
@@ -100,7 +101,7 @@
 
 <br/><br/>
 <div class="section" id="userinfo">    
-   <h3>Users Info:</h3>
+<div class="h4 text-center mb-4 title">Users Info:</div>
     <table border=2>
    
      {% for usr in user_list %}     
@@ -113,20 +114,20 @@
  </div>
  <br/><br/>
   <div class="section" id="throughput">          
-       <h3>Throughput Metrics:</h3>
+       <div class="h4 text-center mb-4 title">Throughput Metrics:</div>
     <table border=2>
     <tr>
-    <td>No Of Query Requests
+    <td>No. Of Query Requests
     </td>
-    <td>No Of Insert Requests
+    <td>No. Of Insert Requests
     </td>
-    <td>No Of Update Requests
+    <td>No. Of Update Requests
     </td>
-    <td>No Of Delete Requests
+    <td>No. Of Delete Requests
     </td>
-    <td>No Of Clients with Read in Progress
+    <td>No. Of Clients with Read in Progress
     </td>
-    <td>No Of Clients with Write in Progress
+    <td>No. Of Clients with Write in Progress
     </td>
     </tr>
     <tr>
@@ -140,14 +141,17 @@
     </div>
     <br/><br/>
     <div class="section" id="repl">
-    <h3>Replication Metrics:</h3>
+    <div class="h4 text-center mb-4 title">Replication Metrics:</div>
     <table border=2>
     <tr>
     <td>Size of the Oplog(MB)
     </td>
     <td>Oplog Window(secs)
     </td>
- 
+    <td>Replication Lag
+    </td>
+     <td>Replication Head Room(secs)
+    </td>
     </tr>
     <tr>
      {% for repl in repl_list %}  
