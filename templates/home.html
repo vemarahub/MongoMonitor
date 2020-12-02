@@ -1,11 +1,54 @@
- <html>
+<html>
 <head>
 <title>Mongo Details</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
 </head>
+<header>
+    <div class="profile-page sidebar-collapse">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-transparent bg-primary" color-on-scroll="400">
+        <div class="container">
+          <div class="navbar-translate">
+            <a class="navbar-brand" href="#" rel="tooltip">Mongo Monitor(MoMon)</a>
+            <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+              aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link smooth-scroll" href="#instance">InstanceInfo</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link smooth-scroll" href="#dbinfo">DBInfo</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link smooth-scroll" href="#userinfo">UserInfo</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link smooth-scroll" href="#throughput">Throughput</a>
+                  </li>
+                  
+              <li class="nav-item">
+                <a class="nav-link smooth-scroll" href="#repl">Replication</a>
+              </li>
+             
+            
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
 <body>
-<div>
-<br>
+
+<div class="section" id="instance">
 <h3>Mongo Database Instance Details:</h3>
  <table border=2>
   <tr><th>Instance Name</th><td> {{ instance }}</td></tr>
@@ -23,27 +66,25 @@
 {% endif %}
 <tr><th>Connections</th><td> {{ conn }} </td></tr>
 </table>
-<br>
+</div>
+<br/><br/>
+<div class="section" id="dbinfo">
 <h3>Database Info:</h3>
-
     <table border=2>
-
      {% for db in final_list %}   
          <tr>  
            {% for item in db %}          
-             <td> {{item}} </td>
+             <td align="center"> {{item}} </td>
            {% endfor %}
         </tr> 
-     {% endfor %}
-    
-   
+     {% endfor %}     
     </table>
-       
+</div>  
+
      {% if ops_list|length > 5  %}   
     <h3>Current Active Ops:</h3>
 
     <table border=2>
-
      {% for ops in ops_list %}   
          <tr>  
            {% for op in ops %}          
@@ -55,6 +96,10 @@
    
     </table>
     {% endif %}
+  
+
+<br/><br/>
+<div class="section" id="userinfo">    
    <h3>Users Info:</h3>
     <table border=2>
    
@@ -63,9 +108,57 @@
              <td> {{usr}} </td>
   
         </tr> 
-     {% endfor %}
-   
+     {% endfor %}   
     </table>
-</div>    
-</body>
+ </div>
+ <br/><br/>
+  <div class="section" id="throughput">          
+       <h3>Throughput Metrics:</h3>
+    <table border=2>
+    <tr>
+    <td>No Of Query Requests
+    </td>
+    <td>No Of Insert Requests
+    </td>
+    <td>No Of Update Requests
+    </td>
+    <td>No Of Delete Requests
+    </td>
+    <td>No Of Clients with Read in Progress
+    </td>
+    <td>No Of Clients with Write in Progress
+    </td>
+    </tr>
+    <tr>
+     {% for tput in tput_list %}       
+              
+             <td align="center"> {{tput}} </td>  
+       
+     {% endfor %}
+   </tr>
+    </table>
+    </div>
+    <br/><br/>
+    <div class="section" id="repl">
+    <h3>Replication Metrics:</h3>
+    <table border=2>
+    <tr>
+    <td>Size of the Oplog(MB)
+    </td>
+    <td>Oplog Window(secs)
+    </td>
+ 
+    </tr>
+    <tr>
+     {% for repl in repl_list %}  
+      
+              
+             <td align="center"> {{repl}} </td>  
+       
+     {% endfor %}
+   </tr>
+    </table>
+    </div>
+
+
 </html>

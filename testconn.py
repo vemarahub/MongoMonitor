@@ -1,52 +1,24 @@
 # -*- coding: utf-8 -*-
 import pymongo
+import getReplicationInfo
 #import pyautogui
 
 
 #client = pymongo.MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
 sum = 0
 
-client = pymongo.MongoClient("mongodb://test:test@localhost:27000/admin?retryWrites=true&w=majority") # defaults to port 27017
-try:
-    print(client["admin"].command("getLog"))
-except KeyError:
-    
-        
+#client = pymongo.MongoClient("mongodb://test:test@localhost:27000/admin?retryWrites=true&w=majority") # defaults to port 27017
 
+client = pymongo.MongoClient("mongodb://root:root@osboxes:27007/admin?retryWrites=true&w=majority") # defaults to port 27017
 
-"""
-for db in client.list_databases():
-    #Total Size on Disk
-    sum = sum + round(db["sizeOnDisk"]/1024/1024/1024,2)
-   
-    print()
-    
-    #Database List
-    print(db["name"]," ",round(db["sizeOnDisk"]/1024/102:4/1024,2),"GB")
-    
-    #Collections in each DB
-    print("No Of Collections :",client[db["name"]].command("dbstats")["collections"])
-    print("No Of Indexes :",client[db["name"]].command("dbstats")["indexes"])
-    print("No Of Documents in DB :",client[db["name"]].command("dbstats")["objects"])
-    print()
-    print("Collections :",list(client[db["name"]].list_collection_names()))
-   
-    #for col in client[db["name"]].list_collection_names():
-        #print(col)
-     
-print()  
-print("-----------------------------------------")   
-print("Total Size on Disk for all DBs : ",sum,"GB") 
- 
+#abc = client["admin"].command({"getLog":'global'})
+#print(client["admin"].command({"getLog":'global'})["log"])
 
-# print the number of documents in a collection
+abc = client["admin"].command({"replSetGetStatus": 1})
+#print("logsizemb: " + str(getReplicationInfo.logsizemb(client)))
+#print("usedmb: " + str(getReplicationInfo.usedmb(client)))
+#print("tfirst: " + str(getReplicationInfo.tfirst(client)))
+#print("tlast: " + str(getReplicationInfo.tlast(client)))
+#print("timediff: " + str(getReplicationInfo.timediff(client)))
 
-
-
-
-
-#print(db.sales.count_documents({"customer":{"$exists": "false"}}))
-
-#returnList = db.sales.find({"customer":{"$exists": "false"}})
-#print(returnList[0])
-"""
+print(abc)

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pymongo import MongoClient
-
+import getReplicationInfo
 
 def db_info(url):
    
     final_list=[]
     ops_list=[]
     user_list=[]
+    tput_list=[]
+    repl_list=[]
+    
     tot_size=""
     instance=""
     version=""
@@ -30,6 +33,7 @@ def db_info(url):
     op_currentOpTimes=["CURRENT OP TIME"]
     op_secrunnings=["SECS RUNNING"]
     
+
     #client = MongoClient("mongodb+srv://m001-student:vemara@sandbox.m8irx.mongodb.net/sandbox?retryWrites=true&w=majority") # defaults to port 27017
     try:
         client = MongoClient(url,serverSelectionTimeoutMS = 50000)
@@ -47,15 +51,28 @@ def db_info(url):
                     op_secrunnings.append(operation["secs_running"])
         
     except:
-        return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list
+        return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list,tput_list,repl_list
             
   
-    
+    #Instance Details
     instance=client["admin"].command("serverStatus")["host"]
     version=client["admin"].command("serverStatus")["version"]
     conn = client["admin"].command("serverStatus")["connections"]
     uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
     user_list = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
+    
+    #Throughput
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["query"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["insert"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["update"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["delete"])
+    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["readers"])
+    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["writers"])
+        
+    #Replication
+    repl_list.append(getReplicationInfo.usedmb(client))
+    repl_list.append(getReplicationInfo.timediff(client))
+    
     try:
         primary = client["admin"].command("serverStatus")["repl"]["primary"]
         hosts =  client["admin"].command("serverStatus")["repl"]["hosts"]
@@ -91,5 +108,8 @@ def db_info(url):
     ops_list.append(op_nss)
     ops_list.append(op_currentOpTimes)
     ops_list.append(op_secrunnings)
-    return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list
+    
+    
+    
+    return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list,tput_list,repl_list
 

@@ -31,18 +31,27 @@ def server():
       tot_size=""
       instance=""
     
-      final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list=db_details.db_info(url)
+      final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list,tput_list,repl_list=db_details.db_info(url)
        
       if(instance==""):
         return render_template("error.html")
       else:
-        return render_template("home.html",instance=instance,final_list=final_list,tot_size=tot_size,version=version,uptime=uptime,hosts=hosts,primary=primary,conn=conn,user_list=user_list,ops_list=ops_list)
+        return render_template("home.html",instance=instance,final_list=final_list,tot_size=tot_size,version=version,uptime=uptime,hosts=hosts,primary=primary,conn=conn,user_list=user_list,ops_list=ops_list,tput_list=tput_list,repl_list=repl_list)
       
      
 
     else:   
         return render_template('index.html')
 
+
+@app.route('/index', methods=['GET', 'POST'])
+def index_func():
+      return render_template('index.html')
+
+@app.route('/home', methods=['GET', 'POST'])
+def home_func():
+      return render_template("home.html")
+      
 
 if __name__ =='__main__':
     app.run(debug=True) 
