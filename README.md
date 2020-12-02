@@ -9,6 +9,7 @@ pip install pymongo
 pip install flask
 
 Use "run.py" to run the code
+
 python run.py
 
 Access the URL : http://localhost:5000
