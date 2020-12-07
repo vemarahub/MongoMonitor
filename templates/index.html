@@ -1,28 +1,51 @@
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
 </head>
 
+<header>
+    <div class="profile-page sidebar-collapse">
+      <nav class="navbar navbar-expand-lg fixed-top bg-primary" color-on-scroll="400">
+        <div class="container">
+          <div class="navbar-translate">
+            <a class="navbar-brand" href="#" rel="tooltip">Welcome to Mongo Monitor Tool ( Mon-Mon )</a>
+            <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+              aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </button>
+          </div>
+        
+        </div>
+      </nav>
+    </div>
+  </header>
+
 <body>
-   <div class="index">
+ 
+      <div class="container">
+   
 <form method="POST">
 <br>
-    <center><h3>Enter Your Mongo Instance Details:</h3></center><br><br>
-  <table align = "center">
-   <tr><th>Mongo URL : </th><td> <input type="text" name="mongourl"></td></tr>
-  </table>
- <center><h3>OR</h3></center>
-    <table align = "center">
-    <tr><th>Hostname : </th><td> <input type="text" name="hostname"></td></tr>
+   
+  <table class="table">
+   <tr><th scope="col">Mongo URL : </th><td> <input type="text" class="form-control" placeholder="Enter MongoDB URL of your Instance" name="mongourl"></td></tr>
+
+  <tr><th><h3>OR</h3></th></tr>
+    
+    <tr><th scope="row"> Hostname : </th><td> <input type="text" class="form-control"  placeholder="Enter Hostname of your Instance" name="hostname"></td></tr>
     <tr><td></td></tr>
-     <tr><th>Port     :</th><td>  <input type="text" name="port"></td></tr>
+     <tr><th>Port     :</th><td>  <input type="text" class="form-control" placeholder="Enter Port of your Instance" name="port"></td></tr>
       <tr><td></td></tr>
-    <tr><th>Username :  </th><td> <input type="text" name="username"></td></tr>
+    <tr><th>Username :  </th><td> <input type="text" class="form-control" placeholder="Enter UserName of your Instance" name="username"></td></tr>
      <tr><td></td></tr>
-   <tr><th> Password :  </th><td> <input type="password" name="password"></td></tr>
-    <tr><td></td></tr> <tr><td></td></tr>
-    <tr><th><input type="submit" value="Submit"></td></tr>
+   <tr><th> Password :  </th><td> <input type="password" class="form-control" placeholder="Enter Password of your Instance" name="password"></td></tr>   
     </table>
+    <br/><br/>
+    <input type="submit" class="btn login_btn" value="Submit">
 </form>
 </div>
 </body>
