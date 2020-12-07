@@ -8,7 +8,7 @@
 </head>
 <header>
     <div class="profile-page sidebar-collapse">
-      <nav class="navbar navbar-expand-lg fixed-top navbar-transparent bg-primary" color-on-scroll="400">
+      <nav class="navbar navbar-expand-lg fixed-top bg-primary" color-on-scroll="400">
         <div class="container">
           <div class="navbar-translate">
             <a class="navbar-brand" href="#" rel="tooltip">Mongo Monitor ( Mon-Mon )</a>
@@ -34,11 +34,11 @@
                 <li class="nav-item">
                     <a class="nav-link smooth-scroll" href="#throughput">Throughput</a>
                   </li>
-                  
+                  {% if (hosts!="") %}
               <li class="nav-item">
                 <a class="nav-link smooth-scroll" href="#repl">Replication</a>
               </li>
-             
+             {% endif %}
             
             </ul>
           </div>
@@ -49,12 +49,12 @@
 <body>
 
 <div class="section" id="instance">
-<div class="h4 text-center mb-4 title">Instance Details:</div>
- <table border=2>
-  <tr><th>Instance Name</th><td> {{ instance }}</td></tr>
-<tr><th>Instance Size</th><td> {{ tot_size }} GB </td></tr>
-<tr><th>Version</th><td> {{ version }} </td></tr>
-<tr><th>Up Time</th><td> {{ uptime }} Days </td></tr>
+<button type="button" class="btn btn-info btn-lg btn-block"><b>INSTANCE DETAILS</b></button>
+ <table class="table">
+  <tr><th scope="row">Instance Name</th><td> {{ instance }}</td></tr>
+<tr><th scope="row">Instance Size</th><td> {{ tot_size }} GB </td></tr>
+<tr><th scope="row">Version</th><td> {{ version }} </td></tr>
+<tr><th scope="row">Up Time</th><td> {{ uptime }} Days </td></tr>
 {% if (hosts!="") %}
 <tr><th>Instance Type </th><td> Replica Set </td></tr>
 <tr><th>Hosts </th><td> {{ hosts }} </td></tr>
@@ -67,11 +67,11 @@
 <tr><th>Connections</th><td> {{ conn }} </td></tr>
 </table>
 </div>
-<br/><br/>
+
 
 <div class="section" id="dbinfo">
-<div class="h4 text-center mb-4 title">Database Info:</div>
-    <table border=2>
+<button type="button" class="btn btn-info btn-lg btn-block"><b>DATABASE INFO</b></button>
+    <table class="table">
      {% for db in final_list %}   
          <tr>  
            {% for item in db %}          
@@ -83,9 +83,9 @@
 </div>  
 
      {% if ops_list|length > 5  %}   
-    <div class="h4 text-center mb-4 title">Current Active Ops:</div>
+  <button type="button" class="btn btn-info btn-lg btn-block"><b>CURRENT ACTIVE OPS</b></button>
 
-    <table border=2>
+    <table class="table">
      {% for ops in ops_list %}   
          <tr>  
            {% for op in ops %}          
@@ -98,11 +98,9 @@
     </table>
     {% endif %}
   
-
-<br/><br/>
 <div class="section" id="userinfo">    
-<div class="h4 text-center mb-4 title">Users Info:</div>
-    <table border=2>
+<button type="button" class="btn btn-info btn-lg btn-block"><b>USER INFO</b></button>
+    <table class="table">
    
      {% for usr in user_list %}     
         <tr>         
@@ -114,8 +112,8 @@
  </div>
  <br/><br/>
   <div class="section" id="throughput">          
-       <div class="h4 text-center mb-4 title">Throughput Metrics:</div>
-    <table border=2>
+       <button type="button" class="btn btn-info btn-lg btn-block"><b>THROUGHPUT METRICS</b></button>
+    <table class="table">
     <tr>
     <td>No. Of Query Requests
     </td>
@@ -139,10 +137,10 @@
    </tr>
     </table>
     </div>
-    <br/><br/>
+   {% if (hosts!="") %}
     <div class="section" id="repl">
-    <div class="h4 text-center mb-4 title">Replication Metrics:</div>
-    <table border=2>
+    <button type="button" class="btn btn-info btn-lg btn-block"><b>REPLICATION METRICS</b></button>
+    <table  class="table">
     <tr>
     <td>Size of the Oplog(MB)
     </td>
@@ -163,6 +161,6 @@
    </tr>
     </table>
     </div>
-
+{% endif %}
 
 </html>

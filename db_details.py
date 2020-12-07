@@ -68,29 +68,7 @@ def db_info(url):
         return final_list,tot_size,instance,version,uptime,hosts,primary,conn,user_list,ops_list,tput_list,repl_list
             
   
-    #INSTANCE DETAILS################
-    instance=client["admin"].command("serverStatus")["host"]
-    version=client["admin"].command("serverStatus")["version"]
-    conn = client["admin"].command("serverStatus")["connections"]
-    uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
-    user_list = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
-    
-    #THROUGHPUT######################
-    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["query"])
-    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["insert"])
-    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["update"])
-    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["delete"])
-    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["readers"])
-    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["writers"])
-        
-    #REPLICATION####################
-    repl_lag=client["admin"].command({"replSetGetStatus": 1})["members"][0]["optimeDate"] - client["admin"].command({"replSetGetStatus": 1})["members"][1]["optimeDate"]
-    timediff=getReplicationInfo.timediff(client)
-    
-    repl_list.append(getReplicationInfo.usedmb(client))
-    repl_list.append(timediff)
-    repl_list.append(repl_lag)
-    repl_list.append(timediff - repl_lag.seconds)
+   
    
 #    repl_mems = client["admin"].command({"replSetGetStatus": 1})["members"]
        # for repl_mem in repl_mems:
@@ -116,6 +94,30 @@ def db_info(url):
         col_list.append(list(client[db["name"]].list_collection_names()))
         
     
+     #INSTANCE DETAILS################
+    instance=client["admin"].command("serverStatus")["host"]
+    version=client["admin"].command("serverStatus")["version"]
+    conn = client["admin"].command("serverStatus")["connections"]
+    uptime = round(client["admin"].command("serverStatus")["uptime"] / 86400)
+    user_list = client["admin"].system.users.find({},{"_id":0,"user":1,"db":1,"roles":1})
+    
+    #THROUGHPUT######################
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["query"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["insert"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["update"])
+    tput_list.append(client["admin"].command("serverStatus")["opcounters"]["delete"])
+    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["readers"])
+    tput_list.append(client["admin"].command("serverStatus")["globalLock"]["activeClients"]["writers"])
+        
+    #REPLICATION####################
+    if(hosts!=""):
+      repl_lag=client["admin"].command({"replSetGetStatus": 1})["members"][0]["optimeDate"] - client["admin"].command({"replSetGetStatus": 1})["members"][1]["optimeDate"]
+      timediff=getReplicationInfo.timediff(client)
+    
+      repl_list.append(getReplicationInfo.usedmb(client))
+      repl_list.append(timediff)
+      repl_list.append(repl_lag)
+      repl_list.append(timediff - repl_lag.seconds)
     
 
     tot_size= (sum(db_size)) 
